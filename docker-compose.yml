@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # 主应用服务
+  mbti-gallery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mbti-gallery-app
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    env_file:
+      - .env.production
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - mbti-network
+
+  # Nginx 反向代理 (可选)
+  nginx:
+    image: nginx:alpine
+    container_name: mbti-gallery-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - mbti-gallery
+    restart: unless-stopped
+    networks:
+      - mbti-network
+
+networks:
+  mbti-network:
+    driver: bridge
+
+volumes:
+  logs:
+    driver: local

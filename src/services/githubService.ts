@@ -3,7 +3,9 @@
  * 负责与后端GitHub API通信
  */
 
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = process.env.NODE_ENV === 'production' 
+  ? '/api' 
+  : 'http://localhost:3001/api';
 
 export interface GitHubUserInfo {
   login: string;

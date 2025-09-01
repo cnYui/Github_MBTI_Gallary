@@ -83,7 +83,7 @@ const AnalyzePage: React.FC = () => {
       addDebugLog('success', '用户验证成功，开始爬取README数据...');
 
       // 第一步：爬取GitHub README数据
-      const crawlResponse = await fetch('http://localhost:3001/api/github-crawl-readme', {
+      const crawlResponse = await fetch('/api/github-crawl-readme', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ const AnalyzePage: React.FC = () => {
       addDebugLog('info', '开始进行深度MBTI分析...');
 
       // 第二步：使用爬取的数据进行真实的MBTI分析
-      const response = await fetch('http://localhost:3001/api/analyze-mbti', {
+      const response = await fetch('/api/analyze-mbti', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

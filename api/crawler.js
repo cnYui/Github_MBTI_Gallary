@@ -1,4 +1,4 @@
-import GitHubReadmeCrawler from './github-readme-crawler.js';
+import { GitHubReadmeCrawler } from '../lib/github-readme-crawler.js';
 
 export default async function handler(req, res) {
     // 设置CORS头
